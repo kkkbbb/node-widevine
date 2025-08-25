@@ -19,8 +19,8 @@ export class AES_CMAC {
   public calculate(message: Buffer): Buffer {
     const blockCount = this._getBlockCount(message);
 
-    let x = this.EMPTY_BLOCK_SIZE_BUFFER;
-    let y;
+    let x: Buffer = this.EMPTY_BLOCK_SIZE_BUFFER;
+    let y: Buffer;
 
     for (let i = 0; i < blockCount - 1; i++) {
       const from = i * this.BLOCK_SIZE;
@@ -58,7 +58,7 @@ export class AES_CMAC {
 
   private _aes(message: Buffer): Buffer {
     const cipher = crypto.createCipheriv(`aes-${this._key.length * 8}-cbc`, this._key, Buffer.alloc(this.BLOCK_SIZE));
-    const result = cipher.update(message).subarray(0, 16);
+    const result = Buffer.from(cipher.update(message).subarray(0, 16));
     cipher.destroy();
     return result;
   }
